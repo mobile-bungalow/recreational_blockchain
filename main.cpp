@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
-#include <sstream>
+#include <sqlite3.h>
 #include <unordered_map>
-#include <functional>
 using namespace std;
 
 /* Manage.cpp
@@ -14,43 +13,47 @@ using namespace std;
  * editor. so be forgiving.
  */
 
-void launch(){
-	cout << "launching DB\n";
+//----------- Data Base Acess functions -----------
+
+void quit()
+{
+	exit(EXIT_FAILURE);
 }
-
-unordered_map<string,function< void() > >  dict;
-
-
-void process(char *command){
-	std::stringstream comss;
-	comss.str(command);
-	string com = comss.str();
-	
-	try{
-		function<void()> callable = dict[com];
-		callable();
-		 
-	}catch(exception& e){
-		cout << com <<" is and invalid option or command\n";
-		exit(EXIT_FAILURE);
-	}
-}
-
 
 int main(int argc, char *argv[]){
+sqlite3 *db;
 
-if(argc <= 1){
-	cout << "Usage: manage -[flags] [options]\n";
-	cout << "run manage --help for options and flags\n";
-	return 1;
+int fail_flag = sqlite3_open("shrek.db", &db);
+
+if(fail_flag)
+{
+	cerr << "error launching db\n";
+	return 0;
+}
+else
+{
+	cout << "db launched\n";
+	cout << ">> ";
 }
 
+unordered_map<string,function< void() > >  command_key;
 
-for (char **a = argv+1 ; a != argv+argc ; a++) {
-	dict["run_db"]=launch;
-	process(*a);
+command_key["quit"] = quit;
 
-
+while(true)
+{
+	string command;
+	getline(cin, command);
+	try
+	{
+		command_key[command]();
+	}
+	catch(exception& e)
+	{
+		cout << ">> Invalid command\n>>";
+	}
+	
 }
+
 
 }
