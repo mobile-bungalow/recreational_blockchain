@@ -11,4 +11,8 @@ god speed, me
 
 2. items can be transferred from one user to another in the DB, but it must happen in person with a USB. this is intentional.
 
- 
+### Dependencies
+
+1. crypto++
+
+thats all for now 

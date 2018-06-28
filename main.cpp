@@ -11,7 +11,16 @@ using namespace std;
  * the summer of 2018 learning how to build in
  * an unfamiliar language and an unfamiliar text 
  * editor. so be forgiving.
- */
+ *
+ * a quick note on syntax philosophy:
+ *
+ * the c/c++ dereference operator is bad.
+ * you should not parse the same object as 
+ * multiplication, derreference , exponents and 
+ * pointer declaration. i use (*pointer) when
+ * I am derefferencing. side note: pythonic tabbing.
+ *  
+*/
 
 //----------- Data Base Acess functions -----------
 
@@ -19,6 +28,7 @@ void quit()
 {
 	exit(EXIT_FAILURE);
 }
+
 
 int main(int argc, char *argv[]){
 sqlite3 *db;
