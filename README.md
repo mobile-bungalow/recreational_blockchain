@@ -15,4 +15,6 @@ god speed, me
 
 1. crypto++
 
-thats all for now 
+thats all for now
+
+Huge shout out to the itnernet tutorials, Dave Nash in particular. 
