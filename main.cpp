@@ -1,8 +1,12 @@
+
 #include <stdio.h>
 #include <iostream>
 #include <string>
 #include <sqlite3.h>
 #include <unordered_map>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include "network.h"
 using namespace std;
 
 /* Manage.cpp
@@ -24,9 +28,26 @@ using namespace std;
 
 //----------- Data Base Acess functions -----------
 
+supernode* supe;
+node* ne;
+
 void quit()
 {
 	exit(EXIT_FAILURE);
+}
+
+void launch_server()
+{
+	supe = new supernode(8080);
+	//put a while loop here which takes commands like main
+	//treat this like a seperate program state
+	return;
+}
+
+void launch_client()
+{
+	ne  = new node();
+	return;
 }
 
 
@@ -49,7 +70,8 @@ else
 unordered_map<string,function< void() > >  command_key;
 
 command_key["quit"] = quit;
-
+command_key["server"] = launch_server;
+command_key["node"] = launch_client;
 while(true)
 {
 	string command;
