@@ -1,6 +1,7 @@
-#
+
+
 #----------------------------------------------------------------------------
-CC = g++
+CC = clang++
 FLAGS = -std=c++11 -lsqlite3 -L/usr/local/lib -I/usr/local/include 
 #-----------------------------------------------------------------------------
 
@@ -12,7 +13,8 @@ compile: *.o
 
 clean:
 	rm -f *.o
-
+	rm -f *.db
+	rm manage
 build:
 	clean
 	compile
