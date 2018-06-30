@@ -7,7 +7,7 @@
 #include <sys/socket.h>
 #include <thread>
 #include "network.h"
-
+#include <unistd.h>
 using namespace std;
 
 /* Manage.cpp
@@ -20,7 +20,7 @@ using namespace std;
 */
 
 //----------- Data Base Acess functions -----------
-
+int sole_client_fdesc;
 supernode* supe;
 node* ne;
 thread* super;
@@ -35,6 +35,19 @@ void quit()
 //as an arg like a normal person
 //but OSX threw a fit about threading.
 //eg: it still ran but it made my linter mad.
+
+void message(){
+	if(supe->client < 0)
+	{
+		cout << "no server launched" << endl;
+		return;
+	}
+	const char* message = "somebody";
+	
+	write(sole_client_fdesc,message,255);
+	
+}
+
 void listen_loop()
 {
 	if(supe->client < 0)
@@ -47,7 +60,7 @@ void listen_loop()
 		cout << "error setting up listener for supernode\n";
 		exit(EXIT_FAILURE);
 	}
-	cout << "listening on port 8080\n>>";
+	cout << "listening on port 8080" << "\n>>" << endl;
 	
 	struct sockaddr shrim;
 	socklen_t client_length = sizeof(shrim);
@@ -57,7 +70,12 @@ void listen_loop()
 	if(sock_file_desc < 0 ){
 		return;
 	}else{
-		cout << "connection on port 8080 \n";
+		cout << "connection on port 8080 >>" << endl;
+		char* buffer[256];
+		bzero(buffer,256);
+		int n = read(sock_file_desc, *buffer, 255);
+		cout << buffer << "\n>>" << endl;
+		sole_client_fdesc = sock_file_desc;
 	}
 
 }
@@ -100,6 +118,7 @@ unordered_map<string,function< void() > >  command_key;
 command_key["quit"] = quit;
 command_key["server"] = launch_server;
 command_key["node"] = launch_client;
+command_key["test"] = message;
 while(true)
 {
 	string command;
